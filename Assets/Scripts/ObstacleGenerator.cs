@@ -9,13 +9,13 @@ public class ObstacleGenerator : MonoBehaviour
     public GameObject obstacle;
     Vector3 positionGenerator = new Vector3(40, 0, 0);
     float waitTime = 2f;
-    float repetitionInterval = 3f;
+    float repetitionInterval;
 
     // Start is called before the first frame update
     void Start()
     {
         playerControl = GameObject.Find("Player").GetComponent<PlayerControl>();
-        InvokeRepeating("generateObstacle", waitTime, repetitionInterval);
+        Invoke("generateObstacle", waitTime);
         
     }
 
@@ -27,10 +27,12 @@ public class ObstacleGenerator : MonoBehaviour
 
     void generateObstacle()
     {
+        repetitionInterval = Random.Range(1f, 3f);
         if(!playerControl.gameOver)
         {
             positionGenerator.x = player.transform.position.x + 30;
             Instantiate(obstacle, positionGenerator, obstacle.transform.rotation);
+            Invoke("generateObstacle", repetitionInterval);
         }
         
     }
